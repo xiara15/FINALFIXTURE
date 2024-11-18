@@ -1,0 +1,5 @@
+Competencia: copa america
+Equipo 1: a
+Equipo 2: c
+Equipo 3: b
+Equipo 4: d

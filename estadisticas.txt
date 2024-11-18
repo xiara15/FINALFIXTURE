@@ -1,0 +1,7 @@
+PG:2, PP:5, PE:4, PJ:11, GF:7, GC:9, DG:-2, Pts:10
+PG:2, PP:1, PE:3, PJ:6, GF:2, GC:5, DG:-3, Pts:9
+PG:2, PP:1, PE:2, PJ:5, GF:5, GC:3, DG:2, Pts:8
+PG:4, PP:3, PE:1, PJ:8, GF:8, GC:5, DG:3, Pts:13
+PG:4, PP:2, PE:6, PJ:12, GF:8, GC:7, DG:1, Pts:18
+PG:2, PP:5, PE:7, PJ:14, GF:9, GC:2, DG:7, Pts:13
+PG:5, PP:8, PE:6, PJ:19, GF:1, GC:5, DG:-4, Pts:21
