@@ -67,7 +67,6 @@ void CrearMenu() {
             case 2:
                 system("cls");
                 menuFixture ();
-                menuFixture ();
                 break;
             case 3:
                 exit(0);
