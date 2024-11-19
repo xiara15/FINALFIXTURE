@@ -32,7 +32,7 @@ struct estadisticas {
 //Estructura para guardar el nombre de la competencia y los equipos
 struct competencia {
     char nombreCompetencia[50];
-    struct grupos grupo [4];
+    struct grupos grupo [8];
 
 };
 
@@ -82,20 +82,34 @@ void CrearMenu() {
 
 void crearFixture() {
     char nombreCompetencia[50];
-    struct grupos grupo;
+    struct grupos grupo[4];  // Mantener 4 grupos
+    int numGrupos;
 
     // Solicitar nombre de la competencia
     printf("Ingrese el nombre de la competencia que se va a jugar: ");
     fflush(stdin);
     fgets(nombreCompetencia, 50, stdin);
-    nombreCompetencia[strcspn(nombreCompetencia, "\n")] = 0;  // Eliminar salto de línea //strspn copiar cadena de caracter y pegar en el archivo
+    nombreCompetencia[strcspn(nombreCompetencia, "\n")] = 0;  // Eliminar salto de línea
 
-    // Solicitar los nombres de los equipos
-    for (int i = 0; i < 4; i++) {
-        printf("Ingrese el nombre del equipo %d: ", i + 1);
-        fflush(stdin);
-        fgets(grupo.equipo[i].nombreEquipo, 50, stdin);
-        grupo.equipo[i].nombreEquipo[strcspn(grupo.equipo[i].nombreEquipo, "\n")] = 0;  // Eliminar salto de línea
+    // Solicitar la cantidad de grupos
+    printf("Ingrese el numero de los grupos (máximo 4): ");
+    scanf("%d", &numGrupos);
+
+    // Validación del número de grupos
+    if (numGrupos < 1 || numGrupos > 4) {
+        printf("Numero de grupos inválido. Intente de nuevo.\n");
+        return;
+    }
+
+    // Solicitar los nombres de los equipos para cada grupo
+    for (int i = 0; i < numGrupos; i++) {
+        printf("\nIngrese los nombres de los equipos para el Grupo %d:\n", i + 1);
+        for (int j = 0; j < 4; j++) {
+            printf("Ingrese el nombre del equipo %d: ", j + 1);
+            fflush(stdin);
+            fgets(grupo[i].equipo[j].nombreEquipo, 50, stdin);
+            grupo[i].equipo[j].nombreEquipo[strcspn(grupo[i].equipo[j].nombreEquipo, "\n")] = 0;  // Eliminar salto de línea
+        }
     }
 
     // Guardar la competencia y equipos en el archivo
@@ -105,17 +119,16 @@ void crearFixture() {
         return;
     }
 
-    fprintf(archivoEquipos, "Competencia: %s\n", nombreCompetencia); //guardar en el archivo fprintf
-    for (int i = 0; i < 4; i++) {
-        fprintf(archivoEquipos, "Equipo %d: %s\n", i + 1, grupo.equipo[i].nombreEquipo);
+    fprintf(archivoEquipos, "Competencia: %s\n", nombreCompetencia);
+    for (int i = 0; i < numGrupos; i++) {
+        fprintf(archivoEquipos, "\nGrupo %d:\n", i + 1);
+        for (int j = 0; j < 4; j++) {
+            fprintf(archivoEquipos, "Equipo %d: %s\n", j + 1, grupo[i].equipo[j].nombreEquipo);
+        }
     }
 
-    fclose(archivoEquipos); //funcion para cerrar el archivo
+    fclose(archivoEquipos);
     printf("Competencia y equipos guardados correctamente\n");
-}
-
-
-
 
 
 // aqui comienza las funciones del menuFixture
@@ -136,6 +149,9 @@ void verFixtureCompleto() {
     }
 
     fclose(archivoEquipos);
+}
+
+
 }
 
 // Función para ver un grupo específico

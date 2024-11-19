@@ -1,5 +1,5 @@
-Competencia: copa america
-Equipo 1: a
-Equipo 2: c
-Equipo 3: b
-Equipo 4: d
+Competencia: fds
+Equipo 1:  d
+Equipo 2: d
+Equipo 3: 
+Equipo 4: 
