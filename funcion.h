@@ -38,8 +38,12 @@ struct competencia {
 
 // Prototipos de funciones
 void CrearMenu();
-void crearFixture() ;
-
+void crearFixture();
+void verFixtureCompleto();
+void verGrupo();
+void cargarEstadisticas();
+void modificarDato();
+void menuFixture();
 
 // Función para el menú principal
 void CrearMenu() {
@@ -59,13 +63,11 @@ void CrearMenu() {
             case 1:
                 system("cls");
                 crearFixture();
-
                 break;
             case 2:
                 system("cls");
                 menuFixture ();
-
-                // Aquí puedes llamar a la función verFixture cuando esté definida
+                menuFixture ();
                 break;
             case 3:
                 exit(0);
@@ -92,12 +94,12 @@ void crearFixture() {
     nombreCompetencia[strcspn(nombreCompetencia, "\n")] = 0;  // Eliminar salto de línea
 
     // Solicitar la cantidad de grupos
-    printf("Ingrese el numero de los grupos (máximo 4): ");
+    printf("Ingrese el numero de los grupos, no mas de 4: ");
     scanf("%d", &numGrupos);
 
     // Validación del número de grupos
     if (numGrupos < 1 || numGrupos > 4) {
-        printf("Numero de grupos inválido. Intente de nuevo.\n");
+        printf("El numero del grupo esta mal porfiado. Intente de nuevo.\n");
         return;
     }
 
@@ -128,14 +130,14 @@ void crearFixture() {
     }
 
     fclose(archivoEquipos);
-    printf("Competencia y equipos guardados correctamente\n");
-
+    printf("Competencia y equipos guardados correctamente, muy bien\n");
 
 // aqui comienza las funciones del menuFixture
 
 // Función para ver fixture completo
 
-void verFixtureCompleto() {
+}
+void verFixtureCompleto(){
     archivoEquipos = fopen("miarchivo.txt", "r");
     if (archivoEquipos == NULL) {
         printf("Error al abrir el archivo.\n");
@@ -149,9 +151,6 @@ void verFixtureCompleto() {
     }
 
     fclose(archivoEquipos);
-}
-
-
 }
 
 // Función para ver un grupo específico
@@ -191,28 +190,41 @@ void verFixtureCompleto() {
     }
 
     fclose(archivoEquipos);
-
-
 }
 
-
-
 // Función para cargar estadísticas de un equipo
-void cargarEstadisticas() {
-    struct estadisticas stats;
+    void cargarEstadisticas(){
+    int grupoElegido;
+    int partidoGanado, partidoPerdido, partidoEmpatado, partidoJugado;
+    int golesFavor, golesContra, diferenciaGol, puntos;
+
+    // Solicitar el grupo al usuario
+
+    do
+    {
+        printf("Ingrese el numero del grupo del 1 al 4 solamente para poder ver las estadisticas: ");
+        scanf("%d", &grupoElegido);
+        grupoElegido = toupper(grupoElegido);
+    }
+    while (grupoElegido < 1 || grupoElegido >4 );
+
+
+ // Cargar las estadísticas de los equipos del grupo seleccionado
+    printf("\nCargando estadisticas para el Grupo %d:\n", grupoElegido);
+    for (int i = 0; i < 4; i++) {
     printf("Ingrese los partidos ganados: ");
-    scanf("%d", &stats.partidoGanado);
+    scanf("%d", &partidoGanado);
     printf("Ingrese los partidos perdidos: ");
-    scanf("%d", &stats.partidoPerdido);
+    scanf("%d", &partidoPerdido);
     printf("Ingrese los partidos empatados: ");
-    scanf("%d", &stats.partidoEmpatado);
-    stats.partidoJugado = stats.partidoGanado + stats.partidoPerdido + stats.partidoEmpatado;
+    scanf("%d", &partidoEmpatado);
+    partidoJugado = partidoGanado + partidoPerdido + partidoEmpatado;
     printf("Ingrese los goles a favor: ");
-    scanf("%d", &stats.golesFavor);
+    scanf("%d", &golesFavor);
     printf("Ingrese los goles en contra: ");
-    scanf("%d", &stats.golesContra);
-    stats.diferenciaGol = stats.golesFavor - stats.golesContra;
-    stats.puntos = (stats.partidoGanado * 3) + stats.partidoEmpatado;
+    scanf("%d", &golesContra);
+    diferenciaGol = golesFavor - golesContra;
+    puntos = (partidoGanado * 3) + partidoEmpatado;
 
     archivoEquipos = fopen("estadisticas.txt", "a");
     if (archivoEquipos == NULL) {
@@ -221,41 +233,76 @@ void cargarEstadisticas() {
     }
 
     fprintf(archivoEquipos, "PG:%d, PP:%d, PE:%d, PJ:%d, GF:%d, GC:%d, DG:%d, Pts:%d\n",
-            stats.partidoGanado, stats.partidoPerdido, stats.partidoEmpatado, stats.partidoJugado,
-            stats.golesFavor, stats.golesContra, stats.diferenciaGol, stats.puntos);
+            partidoGanado, partidoPerdido, partidoEmpatado, partidoJugado,
+            golesFavor, golesContra, diferenciaGol, puntos);
 
     fclose(archivoEquipos);
     printf("Estadisticas guardadas correctamente.\n");
+    return;
+}
 }
 
 // Función para modificar un dato
-void modificarDato() {
-   char nombreArchivo[] = "miarchivo.txt";
+
+
+void modificarNombreEquipos() {
+    char grupoBuscado[20];
+    char equipoBuscado[50];
+    char nuevoNombre[50];
     char linea[100];
-    char busqueda[50];
-    char reemplazo[100];
     int encontrado = 0;
 
- printf("Ingrese el dato que desea modificar/n: ");
+    printf("Ingrese el grupo (por ejemplo, 'Grupo 1'): ");
     fflush(stdin);
-    fgets(busqueda, sizeof(busqueda), stdin);
-    busqueda[strcspn(busqueda, "\n")] = 0; // Eliminar salto de línea
+    fgets(grupoBuscado, 20, stdin);
+    grupoBuscado[strcspn(grupoBuscado, "\n")] = 0; // Eliminar salto de línea
 
-   // Pedir el texto de reemplazo
-    printf("Ingrese el nuevo dato: ");
+    printf("Ingrese el nombre actual del equipo: ");
     fflush(stdin);
-    fgets(reemplazo, sizeof(reemplazo), stdin);
-    reemplazo[strcspn(reemplazo, "\n")] = 0; // Eliminar salto de línea
+    fgets(equipoBuscado, 50, stdin);
+    equipoBuscado[strcspn(equipoBuscado, "\n")] = 0;
+
+    printf("Ingrese el nuevo nombre para el equipo: ");
+    fflush(stdin);
+    fgets(nuevoNombre, 50, stdin);
+    nuevoNombre[strcspn(nuevoNombre, "\n")] = 0;
+
+    archivoEquipos = fopen("miarchivo.txt", "r");
+    if (archivoEquipos == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    FILE *archivoTemp = fopen("temp.txt", "w");
+    if (archivoTemp == NULL) {
+        printf("Error al crear archivo temporal.\n");
+        fclose(archivoEquipos);
+        return;
+    }
+
+    // Leer archivo línea por línea y buscar coincidencias
+    while (fgets(linea, sizeof(linea), archivoEquipos)) {
+        if (strstr(linea, grupoBuscado) && encontrado == 0) {
+            encontrado = 1; // Grupo encontrado
+        } else if (encontrado && strstr(linea, equipoBuscado)) {
+            fprintf(archivoTemp, "Equipo: %s\n", nuevoNombre); // Escribir nueva línea
+            encontrado = 0; // Equipo encontrado y modificado
+        } else {
+            fprintf(archivoTemp, "%s", linea); // Copiar línea sin cambios
+        }
+    }
+
+    fclose(archivoEquipos);
+    fclose(archivoTemp);
 
 
 
-
-
-
+    if (encontrado == 0) {
+        printf("El equipo fue modificado exitosamente.\n");
+    } else {
+        printf("No se encontró el equipo o grupo especificado.\n");
+    }
 }
-
-
-
 
 void menuFixture(){
     int opcion;
@@ -277,26 +324,23 @@ void menuFixture(){
 
                printf("Elegiste ver el Fixture Completo.\n");
                verFixtureCompleto();
-            break;
+               break;
 
             case 2://funcion para ver un solo grupo
 
-
                 verGrupo();
-
                 break;
 
             case 3://funcion para cargar las estadisticas
 
                 cargarEstadisticas();
-
                 break;
 
             case 4://funcion para modificar un dato
 
-            modificarDato();
-
+                modificarNombreEquipos() ;
                 break;
+
             default:
                 system("cls");
                 printf("La opcion es incorrecta, volve a intentar de nuevo.\n");

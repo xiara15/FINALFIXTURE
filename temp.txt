@@ -1,13 +1,11 @@
 Competencia: copa america
 
-Grupo 1:
-Equipo 1: arg
+Equipo: paises bajos
 Equipo 2: chile
 Equipo 3: peru
 Equipo 4: venezuela
 
 Grupo 2:
-Equipo 1: colombia
 Equipo 2: eeuu
 Equipo 3: canada
 Equipo 4: brasil
